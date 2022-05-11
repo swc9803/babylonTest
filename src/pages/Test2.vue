@@ -1,4 +1,5 @@
 <template>
+  <!-- ground와 light 구현 -->
   <canvas ref="canvas"></canvas>
 </template>
 
@@ -41,17 +42,23 @@ export default {
               const sourceBox = evt.meshUnderPointer
               sourceBox.position.x += 0.1
               sourceBox.position.y += 0.1
-
               boxMaterial.diffuseColor = BABYLON.Color3.Random()
-            }
-          )
+            })
         )
 
-        return scene
+        const ground = BABYLON.MeshBuilder.CreateGround('ground', { width: 4, height: 4 })
+
+        const xrPromise = scene.createDefaultXRExperienceAsync({
+          floorMeshes: [ground]
+        })
+
+        return xrPromise.then((xrExperience) => {
+          return scene
+        })
       }
-      const sceneToRender = createScene()
-      engine.runRenderLoop(function () {
-        sceneToRender.render()
+
+      createScene().then(sceneToRender => {
+        engine.runRenderLoop(() => sceneToRender.render())
       })
     })
     return {
@@ -62,5 +69,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+canvas {
+  width: 100%;
+  height: 100vh;
+}
 </style>

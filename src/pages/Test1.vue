@@ -55,6 +55,6 @@ export default {
 <style lang="scss" scoped>
 #renderCanvas {
   width: 100%;
-  height: 100%;
+  height: 100vh;
 }
 </style>
